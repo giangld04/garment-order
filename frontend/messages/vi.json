@@ -1,0 +1,127 @@
+{
+  "common": {
+    "appName": "Quản lý đơn hàng may mặc",
+    "login": "Đăng nhập",
+    "logout": "Đăng xuất",
+    "save": "Lưu",
+    "cancel": "Hủy",
+    "delete": "Xóa",
+    "edit": "Sửa",
+    "add": "Thêm",
+    "search": "Tìm kiếm",
+    "loading": "Đang tải...",
+    "confirm": "Xác nhận",
+    "back": "Quay lại",
+    "next": "Tiếp theo",
+    "submit": "Gửi",
+    "reset": "Đặt lại",
+    "close": "Đóng",
+    "view": "Xem",
+    "create": "Tạo mới",
+    "update": "Cập nhật",
+    "export": "Xuất",
+    "import": "Nhập",
+    "filter": "Lọc",
+    "all": "Tất cả",
+    "noData": "Không có dữ liệu",
+    "error": "Lỗi",
+    "success": "Thành công",
+    "warning": "Cảnh báo"
+  },
+  "nav": {
+    "dashboard": "Trang chủ",
+    "customers": "Khách hàng",
+    "products": "Sản phẩm",
+    "orders": "Đơn hàng",
+    "production": "Tiến độ sản xuất",
+    "statistics": "Thống kê",
+    "reports": "Báo cáo",
+    "settings": "Cài đặt"
+  },
+  "auth": {
+    "username": "Tên đăng nhập",
+    "password": "Mật khẩu",
+    "loginTitle": "Đăng nhập hệ thống",
+    "loginSubtitle": "Nhập thông tin để tiếp tục",
+    "forgotPassword": "Quên mật khẩu?",
+    "loginError": "Tên đăng nhập hoặc mật khẩu không đúng"
+  },
+  "dashboard": {
+    "title": "Trang chủ",
+    "totalOrders": "Tổng đơn hàng",
+    "totalRevenue": "Tổng doanh thu",
+    "totalCustomers": "Tổng khách hàng",
+    "pendingOrders": "Đơn chờ xử lý",
+    "recentOrders": "Đơn hàng gần đây",
+    "revenueChart": "Biểu đồ doanh thu"
+  },
+  "customers": {
+    "title": "Quản lý khách hàng",
+    "name": "Tên khách hàng",
+    "phone": "Số điện thoại",
+    "email": "Email",
+    "address": "Địa chỉ",
+    "addCustomer": "Thêm khách hàng",
+    "editCustomer": "Sửa khách hàng",
+    "deleteCustomer": "Xóa khách hàng",
+    "deleteConfirm": "Bạn có chắc muốn xóa khách hàng này?"
+  },
+  "products": {
+    "title": "Quản lý sản phẩm",
+    "name": "Tên sản phẩm",
+    "code": "Mã sản phẩm",
+    "category": "Danh mục",
+    "price": "Giá",
+    "unit": "Đơn vị",
+    "description": "Mô tả",
+    "addProduct": "Thêm sản phẩm",
+    "editProduct": "Sửa sản phẩm",
+    "deleteProduct": "Xóa sản phẩm"
+  },
+  "orders": {
+    "title": "Quản lý đơn hàng",
+    "orderCode": "Mã đơn hàng",
+    "customer": "Khách hàng",
+    "status": "Trạng thái",
+    "deliveryDate": "Ngày giao hàng",
+    "totalAmount": "Tổng tiền",
+    "createdAt": "Ngày tạo",
+    "addOrder": "Tạo đơn hàng",
+    "editOrder": "Sửa đơn hàng",
+    "deleteOrder": "Xóa đơn hàng",
+    "statuses": {
+      "pending": "Chờ xử lý",
+      "confirmed": "Đã xác nhận",
+      "in_production": "Đang sản xuất",
+      "completed": "Hoàn thành",
+      "delivered": "Đã giao",
+      "cancelled": "Đã hủy"
+    }
+  },
+  "production": {
+    "title": "Tiến độ sản xuất",
+    "progress": "Tiến độ",
+    "startDate": "Ngày bắt đầu",
+    "endDate": "Ngày kết thúc",
+    "assignedTo": "Phân công",
+    "notes": "Ghi chú"
+  },
+  "statistics": {
+    "title": "Thống kê",
+    "revenue": "Doanh thu",
+    "byMonth": "Theo tháng",
+    "byQuarter": "Theo quý",
+    "byYear": "Theo năm",
+    "topCustomers": "Khách hàng hàng đầu",
+    "topProducts": "Sản phẩm bán chạy"
+  },
+  "reports": {
+    "title": "Báo cáo",
+    "generateReport": "Tạo báo cáo",
+    "exportPDF": "Xuất PDF",
+    "exportExcel": "Xuất Excel",
+    "dateRange": "Khoảng thời gian",
+    "from": "Từ ngày",
+    "to": "Đến ngày"
+  }
+}
