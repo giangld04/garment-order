@@ -1,5 +1,7 @@
+from datetime import date
 from django.db.models import Sum, Count
 from django.db.models.functions import TruncMonth
+from rest_framework import status as http_status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -55,3 +57,64 @@ class OrderTrendsView(APIView):
             .order_by('month')
         )
         return Response(list(data))
+
+
+class PredictView(APIView):
+    """Predict next 3 months of order volume using trained ML model."""
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        from .ml_predictor import predict_orders
+
+        earliest = Order.objects.order_by('order_date').first()
+        if not earliest:
+            return Response({'error': 'No order data available'}, status=http_status.HTTP_400_BAD_REQUEST)
+
+        today = date.today()
+        month_num = (
+            (today.year - earliest.order_date.year) * 12
+            + today.month - earliest.order_date.month
+        )
+        predictions = predict_orders(month_num)
+        if predictions is None:
+            return Response(
+                {'error': 'Model not trained. Run: python manage.py train_model'},
+                status=http_status.HTTP_400_BAD_REQUEST,
+            )
+
+        # Build predicted month labels (YYYY-MM format)
+        result = []
+        for pred in predictions:
+            offset = pred['month_offset']
+            pred_month = today.month - 1 + offset  # 0-indexed
+            pred_year = today.year + pred_month // 12
+            pred_month_display = pred_month % 12 + 1
+            result.append({
+                'month': f'{pred_year}-{pred_month_display:02d}',
+                'predicted_count': pred['predicted_count'],
+                'is_prediction': True,
+            })
+
+        return Response({'predictions': result})
+
+
+class ExportExcelView(APIView):
+    """Stream orders as .xlsx — supports ?start_date=YYYY-MM-DD&end_date=YYYY-MM-DD."""
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        from .export_excel import export_orders_excel
+        start = request.query_params.get('start_date')
+        end = request.query_params.get('end_date')
+        return export_orders_excel(start, end)
+
+
+class ExportPdfView(APIView):
+    """Stream orders as .pdf — supports ?start_date=YYYY-MM-DD&end_date=YYYY-MM-DD."""
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        from .export_pdf import export_orders_pdf
+        start = request.query_params.get('start_date')
+        end = request.query_params.get('end_date')
+        return export_orders_pdf(start, end)

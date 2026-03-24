@@ -12,6 +12,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import RevenueChart from '@/components/dashboard/revenue-chart';
 import OrderStatusChart, { type StatusDataPoint } from '@/components/dashboard/order-status-chart';
 import OrderTrendChart from '@/components/dashboard/order-trend-chart';
+import PredictionChart from '@/components/dashboard/prediction-chart';
 import {
   analyticsService,
   type MonthlyRevenue,
@@ -147,6 +148,9 @@ export default function StatisticsPage() {
 
       {/* Order trend bar chart */}
       <OrderTrendChart data={trends} loading={loading} />
+
+      {/* ML Prediction chart */}
+      <PredictionChart />
 
       {/* Monthly breakdown table */}
       <Card>
