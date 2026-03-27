@@ -33,6 +33,14 @@ export const MENU_ITEMS: MenuItem[] = [
     roles: ['admin', 'order_manager'],
   },
   {
+    key: 'suppliers',
+    labelVi: 'Nhà cung cấp',
+    labelEn: 'Suppliers',
+    href: '/suppliers',
+    icon: 'Truck',
+    roles: ['admin', 'order_manager'],
+  },
+  {
     key: 'products',
     labelVi: 'Sản phẩm',
     labelEn: 'Products',
@@ -46,6 +54,14 @@ export const MENU_ITEMS: MenuItem[] = [
     labelEn: 'Orders',
     href: '/orders',
     icon: 'ShoppingCart',
+    roles: ['admin', 'order_manager'],
+  },
+  {
+    key: 'materials',
+    labelVi: 'Vật liệu',
+    labelEn: 'Materials',
+    href: '/materials',
+    icon: 'Package',
     roles: ['admin', 'order_manager'],
   },
   {
@@ -70,6 +86,22 @@ export const MENU_ITEMS: MenuItem[] = [
     labelEn: 'Reports',
     href: '/reports',
     icon: 'FileText',
+    roles: ['admin'],
+  },
+  {
+    key: 'users',
+    labelVi: 'Người dùng',
+    labelEn: 'Users',
+    href: '/users',
+    icon: 'UserCog',
+    roles: ['admin'],
+  },
+  {
+    key: 'activity-log',
+    labelVi: 'Nhật ký hoạt động',
+    labelEn: 'Activity Log',
+    href: '/activity-log',
+    icon: 'ClipboardList',
     roles: ['admin'],
   },
 ];

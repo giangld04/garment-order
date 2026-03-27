@@ -31,12 +31,16 @@
   "nav": {
     "dashboard": "Trang chủ",
     "customers": "Khách hàng",
+    "suppliers": "Nhà cung cấp",
     "products": "Sản phẩm",
     "orders": "Đơn hàng",
+    "materials": "Vật liệu",
     "production": "Tiến độ sản xuất",
     "statistics": "Thống kê",
     "reports": "Báo cáo",
-    "settings": "Cài đặt"
+    "users": "Người dùng",
+    "settings": "Cài đặt",
+    "activityLog": "Nhật ký hoạt động"
   },
   "auth": {
     "username": "Tên đăng nhập",
@@ -65,6 +69,20 @@
     "editCustomer": "Sửa khách hàng",
     "deleteCustomer": "Xóa khách hàng",
     "deleteConfirm": "Bạn có chắc muốn xóa khách hàng này?"
+  },
+  "suppliers": {
+    "title": "Quản lý nhà cung cấp",
+    "name": "Tên nhà cung cấp",
+    "contactPerson": "Người liên hệ",
+    "phone": "Số điện thoại",
+    "email": "Email",
+    "address": "Địa chỉ",
+    "taxCode": "Mã số thuế",
+    "notes": "Ghi chú",
+    "addSupplier": "Thêm nhà cung cấp",
+    "editSupplier": "Sửa nhà cung cấp",
+    "deleteSupplier": "Xóa nhà cung cấp",
+    "deleteConfirm": "Bạn có chắc muốn xóa nhà cung cấp này?"
   },
   "products": {
     "title": "Quản lý sản phẩm",
@@ -98,6 +116,22 @@
       "cancelled": "Đã hủy"
     }
   },
+  "materials": {
+    "title": "Quản lý vật liệu",
+    "code": "Mã vật liệu",
+    "name": "Tên vật liệu",
+    "unit": "Đơn vị",
+    "quantityInStock": "Tồn kho",
+    "minStockLevel": "Tồn tối thiểu",
+    "unitPrice": "Đơn giá",
+    "supplier": "Nhà cung cấp",
+    "notes": "Ghi chú",
+    "addMaterial": "Thêm vật liệu",
+    "editMaterial": "Sửa vật liệu",
+    "deleteMaterial": "Xóa vật liệu",
+    "deleteConfirm": "Bạn có chắc muốn xóa vật liệu này?",
+    "lowStock": "Vật liệu sắp hết"
+  },
   "production": {
     "title": "Tiến độ sản xuất",
     "progress": "Tiến độ",
@@ -123,5 +157,54 @@
     "dateRange": "Khoảng thời gian",
     "from": "Từ ngày",
     "to": "Đến ngày"
+  },
+  "notifications": {
+    "title": "Thông báo",
+    "markAllRead": "Đọc tất cả",
+    "noNotifications": "Không có thông báo",
+    "types": {
+      "order_status": "Trạng thái đơn hàng",
+      "production_update": "Cập nhật sản xuất",
+      "low_stock": "Cảnh báo tồn kho",
+      "system": "Hệ thống"
+    }
+  },
+  "activityLog": {
+    "title": "Nhật ký hoạt động",
+    "user": "Người dùng",
+    "action": "Hành động",
+    "entityType": "Loại đối tượng",
+    "entityId": "ID đối tượng",
+    "details": "Chi tiết",
+    "createdAt": "Thời gian",
+    "actions": {
+      "create": "Tạo mới",
+      "update": "Cập nhật",
+      "delete": "Xóa"
+    }
+  },
+  "users": {
+    "title": "Quản lý người dùng",
+    "username": "Tên đăng nhập",
+    "firstName": "Họ",
+    "lastName": "Tên",
+    "email": "Email",
+    "phone": "Số điện thoại",
+    "role": "Vai trò",
+    "isActive": "Trạng thái",
+    "active": "Hoạt động",
+    "inactive": "Vô hiệu",
+    "password": "Mật khẩu",
+    "newPassword": "Mật khẩu mới",
+    "addUser": "Thêm tài khoản",
+    "editUser": "Sửa tài khoản",
+    "deleteUser": "Xóa tài khoản",
+    "deleteConfirm": "Bạn có chắc muốn xóa tài khoản này?",
+    "cannotDeleteSelf": "Không thể xóa tài khoản của chính mình",
+    "roles": {
+      "admin": "Quản trị viên",
+      "order_manager": "Quản lý đơn hàng",
+      "production_manager": "Quản lý sản xuất"
+    }
   }
 }
