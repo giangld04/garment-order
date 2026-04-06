@@ -10,6 +10,7 @@ import { clearAuth } from '@/lib/auth-utils';
 import { ROLE_LABELS } from '@/lib/constants';
 import type { User } from '@/types/user';
 import { useRouter } from 'next/navigation';
+import NotificationBell from '@/components/layout/notification-bell';
 
 interface HeaderBarProps {
   user: User | null;
@@ -60,6 +61,9 @@ export default function HeaderBar({
             </Badge>
           </>
         )}
+
+        {/* Notification bell */}
+        <NotificationBell />
 
         {/* Language toggle */}
         <Button

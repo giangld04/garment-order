@@ -9,13 +9,16 @@ import StatCard from '@/components/dashboard/stat-card';
 import RevenueChart from '@/components/dashboard/revenue-chart';
 import OrderStatusChart, { type StatusDataPoint } from '@/components/dashboard/order-status-chart';
 import OrderTrendChart from '@/components/dashboard/order-trend-chart';
+import LowStockAlertCard from '@/components/dashboard/low-stock-alert-card';
 import {
   analyticsService,
   type DashboardStats,
   type MonthlyRevenue,
   type OrderTrendEntry,
 } from '@/lib/services/analytics-service';
+import { materialService } from '@/lib/services/material-service';
 import { formatCurrency, formatNumber } from '@/lib/format-utils';
+import type { Material } from '@/types/material';
 
 // Derive status counts from order-trends data (sum all months per status)
 function deriveStatusData(trends: OrderTrendEntry[]): StatusDataPoint[] {
@@ -30,6 +33,7 @@ export default function DashboardPage() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [revenue, setRevenue] = useState<MonthlyRevenue[]>([]);
   const [trends, setTrends] = useState<OrderTrendEntry[]>([]);
+  const [lowStockMaterials, setLowStockMaterials] = useState<Material[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -40,15 +44,17 @@ export default function DashboardPage() {
       setLoading(true);
       setError(null);
       try {
-        const [dashRes, revRes, trendRes] = await Promise.all([
+        const [dashRes, revRes, trendRes, lowStockRes] = await Promise.all([
           analyticsService.dashboard(),
           analyticsService.revenue(),
           analyticsService.orderTrends(),
+          materialService.lowStock(),
         ]);
         if (!cancelled) {
           setStats(dashRes.data);
           setRevenue(revRes.data);
           setTrends(trendRes.data);
+          setLowStockMaterials(lowStockRes.data);
         }
       } catch {
         if (!cancelled) setError('Không thể tải dữ liệu. Vui lòng thử lại.');
@@ -125,6 +131,9 @@ export default function DashboardPage() {
 
       {/* Full-width bar chart */}
       <OrderTrendChart data={trends} loading={loading} />
+
+      {/* Low-stock alert */}
+      <LowStockAlertCard materials={lowStockMaterials} loading={loading} />
     </div>
   );
 }

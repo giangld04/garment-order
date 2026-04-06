@@ -1,20 +1,24 @@
-// Proxy (formerly middleware) — handles next-intl locale detection from NEXT_LOCALE cookie
-// Auth guard is handled client-side in dashboard layout (localStorage-based)
-// Note: next-intl 4.8.3 still exports createMiddleware; aliased to proxy here
+// Proxy — sets X-NEXT-INTL-LOCALE header from NEXT_LOCALE cookie for next-intl's getLocale()
+// This app does NOT use [locale] directory structure, so we set the header manually
+// instead of using createMiddleware (which would rewrite /→/vi causing 404s)
 
-import createMiddleware from 'next-intl/middleware';
-import { routing } from './i18n/routing';
+import { NextResponse, type NextRequest } from 'next/server';
 
-const intlMiddleware = createMiddleware(routing);
+const SUPPORTED_LOCALES = ['vi', 'en'];
+const DEFAULT_LOCALE = 'vi';
+const LOCALE_HEADER = 'X-NEXT-INTL-LOCALE';
+const LOCALE_COOKIE = 'NEXT_LOCALE';
 
-// Named export required by Next.js 16 proxy convention
-export function proxy(request: Parameters<typeof intlMiddleware>[0]) {
-  return intlMiddleware(request);
+export function proxy(request: NextRequest) {
+  const cookieLocale = request.cookies.get(LOCALE_COOKIE)?.value;
+  const locale = SUPPORTED_LOCALES.includes(cookieLocale ?? '') ? cookieLocale! : DEFAULT_LOCALE;
+
+  const headers = new Headers(request.headers);
+  headers.set(LOCALE_HEADER, locale);
+
+  return NextResponse.next({ request: { headers } });
 }
 
 export const config = {
-  matcher: [
-    // Match all paths except Next.js internals and static files
-    '/((?!_next/static|_next/image|favicon.ico|.*\\..*).*)',
-  ],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico|.*\\..*).*)',],
 };

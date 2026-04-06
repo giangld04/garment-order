@@ -98,6 +98,40 @@ class PredictView(APIView):
         return Response({'predictions': result})
 
 
+class RecommendView(APIView):
+    """GET /api/analytics/recommendations/?customer_id=X&top_n=5
+    Returns collaborative-filtering product recommendations for a customer.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        customer_id = request.query_params.get('customer_id')
+        if not customer_id:
+            return Response({'error': 'customer_id is required'}, status=http_status.HTTP_400_BAD_REQUEST)
+        try:
+            customer_id = int(customer_id)
+        except ValueError:
+            return Response({'error': 'customer_id must be an integer'}, status=http_status.HTTP_400_BAD_REQUEST)
+
+        top_n = int(request.query_params.get('top_n', 5))
+        try:
+            customer = Customer.objects.get(pk=customer_id)
+        except Customer.DoesNotExist:
+            return Response({'error': 'Customer not found'}, status=http_status.HTTP_404_NOT_FOUND)
+
+        from .recommender import get_recommendations
+        result = get_recommendations(customer_id, top_n=top_n)
+
+        if 'error' in result:
+            return Response(result, status=http_status.HTTP_400_BAD_REQUEST)
+
+        return Response({
+            'customer_id': customer_id,
+            'customer_name': customer.name,
+            **result,
+        })
+
+
 class ExportExcelView(APIView):
     """Stream orders as .xlsx — supports ?start_date=YYYY-MM-DD&end_date=YYYY-MM-DD."""
     permission_classes = [IsAuthenticated]
@@ -118,3 +152,51 @@ class ExportPdfView(APIView):
         start = request.query_params.get('start_date')
         end = request.query_params.get('end_date')
         return export_orders_pdf(start, end)
+
+
+class ProductPotentialView(APIView):
+    """GET /api/analytics/product-potential/
+    Returns ML-scored product potential ranking for catalog/production decisions.
+    Query params: ?top_n=10&category=ao
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        import os, joblib
+        MODEL_PATH = os.path.join(
+            os.path.dirname(__file__), '..', 'ml_models', 'product_potential.joblib'
+        )
+        if not os.path.exists(MODEL_PATH):
+            return Response(
+                {'error': 'Model not trained. Run: python manage.py train_product_potential'},
+                status=http_status.HTTP_400_BAD_REQUEST,
+            )
+
+        data = joblib.load(MODEL_PATH)
+        df = data['results']
+
+        category = request.query_params.get('category')
+        if category:
+            df = df[df['category'] == category]
+
+        top_n = int(request.query_params.get('top_n', 10))
+        df = df.head(top_n)
+
+        results = []
+        for _, row in df.iterrows():
+            results.append({
+                'rank':            int(row['rank']),
+                'product_id':      int(row['product_id']),
+                'name':            row['name'],
+                'category':        row['category'],
+                'potential_score': float(row['potential_score']),
+                'growth_rate':     round(float(row['growth_rate']), 4),
+                'trend_slope':     round(float(row['trend_slope']), 2),
+                'recent_qty':      int(row['recent_qty']),
+                'order_breadth':   round(float(row['order_breadth']), 4),
+            })
+
+        return Response({
+            'generated_at': data['generated_at'],
+            'products': results,
+        })
