@@ -1,7 +1,6 @@
 'use client';
 
 // Dashboard layout — sidebar + header + content with auth guard
-// Mobile: Sheet-based sidebar; Desktop: fixed sidebar
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -14,7 +13,6 @@ import type { User } from '@/types/user';
 import type { UserRole } from '@/lib/constants';
 import { useLocale } from 'next-intl';
 
-// Cookie key used to persist locale preference
 const LOCALE_COOKIE = 'NEXT_LOCALE';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -22,34 +20,27 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const currentLocale = useLocale();
 
   const [user, setUser] = useState<User | null>(null);
+
   const [locale, setLocale] = useState(currentLocale);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
 
-  // Auth guard: redirect to login if no token
   useEffect(() => {
-    setMounted(true);
     if (!isAuthenticated()) {
       router.replace('/login');
       return;
     }
-    setUser(getUser());
+    // Load user from localStorage after mount (browser-only)
+    const u = getUser();
+    setUser(u); // eslint-disable-line react-hooks/set-state-in-effect
   }, [router]);
 
-  // Toggle between 'vi' and 'en', persist in cookie for next-intl
   const handleLocaleToggle = () => {
     const next = locale === 'vi' ? 'en' : 'vi';
     setLocale(next);
-    document.cookie = `${LOCALE_COOKIE}=${next}; path=/; max-age=31536000`;
-    // Reload to apply new locale messages
+    document.cookie = `NEXT_LOCALE=${next}; path=/; max-age=31536000`;
     window.location.reload();
   };
 
-  // Don't render until mounted (prevents SSR mismatch with localStorage)
-  if (!mounted) return null;
-
-  // Redirect in progress — don't flash content
-  if (!isAuthenticated()) return null;
 
   const userRole = (user?.role ?? null) as UserRole | null;
 
@@ -65,17 +56,23 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </div>
       </aside>
 
-      {/* Mobile sidebar (Sheet) */}
+      {/* Mobile sidebar */}
       <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
         <SheetContent side="left" className="w-60 p-0 bg-sidebar">
           <SheetHeader className="p-4 border-b border-sidebar-border">
-            <SheetTitle className="text-sidebar-foreground text-left">May Mặc</SheetTitle>
+            <SheetTitle className="text-sidebar-foreground text-left">
+              May Mặc
+            </SheetTitle>
           </SheetHeader>
-          <SidebarMenu userRole={userRole} onNavigate={() => setMobileOpen(false)} />
+
+          <SidebarMenu
+            userRole={userRole}
+            onNavigate={() => setMobileOpen(false)}
+          />
         </SheetContent>
       </Sheet>
 
-      {/* Main area */}
+      {/* Main */}
       <div className="flex flex-1 flex-col min-w-0">
         <HeaderBar
           user={user}
@@ -83,7 +80,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           onLocaleToggle={handleLocaleToggle}
           onMobileMenuOpen={() => setMobileOpen(true)}
         />
+
         <Separator />
+
         <main className="flex-1 p-6 overflow-auto">
           {children}
         </main>

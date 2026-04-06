@@ -44,14 +44,14 @@ export default function CustomerTable({ data, loading, onEdit, onDelete }: Custo
         </TableRow>
       </TableHeader>
       <TableBody>
-        {data.length === 0 ? (
+        {data?.length === 0 ? (
           <TableRow>
             <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
               Không có dữ liệu
             </TableCell>
           </TableRow>
         ) : (
-          data.map((customer) => (
+          data?.map((customer) => (
             <TableRow key={customer.id}>
               <TableCell className="font-medium">{customer.name}</TableCell>
               <TableCell>{customer.phone || '—'}</TableCell>

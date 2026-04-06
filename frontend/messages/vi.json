@@ -40,7 +40,7 @@
     "reports": "Báo cáo",
     "users": "Người dùng",
     "settings": "Cài đặt",
-    "activityLog": "Nhật ký hoạt động"
+    "activity-log": "Nhật ký hoạt động"
   },
   "auth": {
     "username": "Tên đăng nhập",

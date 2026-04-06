@@ -40,7 +40,7 @@
     "reports": "Reports",
     "users": "Users",
     "settings": "Settings",
-    "activityLog": "Activity Log"
+    "activity-log": "Activity Log"
   },
   "auth": {
     "username": "Username",

@@ -46,14 +46,14 @@ export default function OrderTable({ data, loading, onDelete }: OrderTableProps)
         </TableRow>
       </TableHeader>
       <TableBody>
-        {data.length === 0 ? (
+        {data?.length === 0 ? (
           <TableRow>
             <TableCell colSpan={7} className="text-center text-muted-foreground py-8">
               Không có dữ liệu
             </TableCell>
           </TableRow>
         ) : (
-          data.map((order) => (
+          data?.map((order) => (
             <TableRow
               key={order.id}
               className="cursor-pointer"
